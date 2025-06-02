@@ -1,0 +1,17 @@
+
+<div class="container mt-4">
+    <h2>Create New User and Employee</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <h4>User Info</h4>
+        {{ user_form.as_p }}
+
+        <h4>Employee Info</h4>
+        {{ employee_form.as_p }}
+
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a href="{% url 'employee_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+

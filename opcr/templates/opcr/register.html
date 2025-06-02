@@ -1,0 +1,25 @@
+<!-- your_app/templates/register.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link rel="stylesheet" href="{% static 'your_app/styles.css' %}"> <!-- Optional CSS -->
+</head>
+<body>
+    <div class="container">
+        <h2>User Registration</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <h3>User Details</h3>
+            {{ user_form.as_p }}
+            <h3>Employee Details</h3>
+            {{ employee_form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!-- your_app/templates/dashboard.html -->
+{% load static %}<!-- your_app/templates/dashboard.html -->
+<!-- your_app/templates/dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'your_app/styles.css' %}"> <!-- Optional CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .logout-button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .logout-button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Dashboard</h2>
+        
+        <h3>Employees</h3>
+        {% for employee in employees %}
+            <div class="card">
+                <div class="card-header">{{ employee.name }}</div>
+                <p><strong>Division:</strong> {{ employee.division.name }}</p>
+                <p><strong>Performance Type:</strong> {{ employee.opcr_dpcr }}</p>
+                <a href="{% url 'employee_report' employee.id %}">View Report</a>
+            </div>
+        {% empty %}
+            <div class="card">
+                <p>No employees found.</p>
+            </div>
+        {% endfor %}
+
+        <h3>KPIs</h3>
+        {% for kpi in kpis %}
+            <div class="card">
+                <div class="card-header">{{ kpi.name }}</div>
+                <p><strong>Office:</strong> {{ kpi.office.name }}</p>
+                <p><strong>Division:</strong> {{ kpi.office.division.name }}</p>
+                <p><strong>Organization Outcome:</strong> {{ kpi.office.organization_outcome.name }}</p>
+            </div>
+        {% empty %}
+            <div class="card">
+                <p>No KPIs found.</p>
+            </div>
+        {% endfor %}
+
+        <h3>Smart KPIs</h3>
+        {% for smart_kpi in smart_kpis %}
+            <div class="card">
+                <div class="card-header">{{ smart_kpi.name }}</div>
+                <p><strong>KPI:</strong> {{ smart_kpi.kpi.name }}</p>
+                <p><strong>Office:</strong> {{ smart_kpi.kpi.office.name }}</p>
+                <p><strong>First Half Percent:</strong> {{ smart_kpi.first_half_percent }}</p>
+                <p><strong>First Half Unit:</strong> {{ smart_kpi.first_half_unit }}</p>
+                <p><strong>Second Half Percent:</strong> {{ smart_kpi.second_half_percent }}</p>
+                <p><strong>Second Half Unit:</strong> {{ smart_kpi.second_half_unit }}</p>
+                <p><strong>Budget:</strong> {{ smart_kpi.budget }}</p>
+            </div>
+        {% empty %}
+            <div class="card">
+                <p>No Smart KPIs found.</p>
+            </div>
+        {% endfor %}
+
+        <h3>OPCR Activities</h3>
+        {% for activity in activities_opcr %}
+            <div class="card">
+                <div class="card-header">Activity: {{ activity.activity }}</div>
+                <p><strong>Employee:</strong> {{ activity.employee.name }}</p>
+                <p><strong>Smart KPI:</strong> {{ activity.smart_kpi.name }}</p>
+                <p><strong>Budget:</strong> {{ activity.budget }}</p>
+            </div>
+        {% empty %}
+            <div class="card">
+                <p>No OPCR activities found.</p>
+            </div>
+        {% endfor %}
+
+        <h3>DPCR Activities</h3>
+        {% for activity in activities_dpc %}
+            <div class="card">
+                <div class="card-header">Activity: {{ activity.activity }}</div>
+                <p><strong>Employee:</strong> {{ activity.employee.name }}</p>
+                <p><strong>DPCR:</strong> {{ activity.DPCR.name }}</p>
+                <p><strong>Budget:</strong> {{ activity.budget }}</p>
+            </div>
+        {% empty %}
+            <div class="card">
+                <p>No DPCR activities found.</p>
+            </div>
+        {% endfor %}
+
+        <a href="{% url 'logout' %}" class="logout-button">Logout</a>
+    </div>
+</body>
+</html>

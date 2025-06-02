@@ -1,0 +1,164 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: maroon;
+            color: #333;        
+            background-image: url("{% static 'iitbackground.jpg' %}");
+            background-size: cover; /* Adjust to fit the screen */
+            background-position: center;
+            background-repeat: no-repeat;
+        
+        }
+        .container {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 80vw; /* Adjust the width to 80% of the viewport width */
+}
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.1em;
+            color: #666;
+        }
+        button {
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .button-ipcr {
+            background-color: #033cf7;
+            color: white;
+        }
+        .button-activities {
+            background-color: #008CBA;
+            color: white;
+        }
+        .button-nokpi {
+            background-color: #48f504;
+            color: rgb(7, 7, 7);
+        }
+        .button-logout {
+            background-color: #f44336;
+            color: white;
+        }
+        /* Hover effects for enabled buttons */
+        .button-ipcr:hover, .button-activities:hover:not(:disabled), .button-nokpi:hover:not(:disabled), .button-logout:hover {
+            background-color: #fce304;
+            transform: scale(1.10);
+        }
+        /* Styles for button rows */
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .button-row-second {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .button-row-third {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<div style="padding-bottom: 50px;">
+    <img src="{% static 'images/iit.png' %}" alt="Description of the image"> 
+
+</div>
+
+
+<body>
+    <div class="container">
+        {% if request.user.is_authenticated %}
+            <h1>Welcome, {{ request.user.employee.name }}!</h1>
+            {% for group in request.user.groups.all %}
+                {% if group.name == 'RC Head' %}
+                    <!-- First row of buttons -->
+                    <div class="button-row">
+                        <button onclick="window.location.href='{% url 'add_ipcr_opcr' %}'" class="button-ipcr">Assign IPCR from OPCR</button>
+                        <button onclick="window.location.href='{% url 'add_ipcr_dpcr' %}'" class="button-ipcr">Assign DPCR from DPCR</button>
+                        <button onclick="window.location.href='{% url 'employee_list' %}'" class="button-ipcr">Employee Update</button>
+                        <button onclick="window.location.href='{% url 'add_opcr_smart_kpi' %}'" class="button-ipcr">Add Smart KPI</button>
+                        <button onclick="window.location.href='{% url 'opcr_smart_kpi_list' %}'" class="button-ipcr">List Smart KPI</button>
+                        
+                        
+                    </div>
+                {% endif %}
+                {% if group.name == 'OPCR' %}
+                    <!-- First row of buttons -->
+                    <div class="button-row">
+                        <button onclick="window.open('{% url 'generate_pdf' %}', '_blank')" class="button-ipcr">Show OPCR</button>
+                        <button onclick="window.location.href='{% url 'opcr_smart_kpi_list' %}'" class="button-ipcr">Update OPCR</button>
+                        
+                        
+                        
+                    </div>
+                {% endif %}
+           
+
+            <!-- Second row of buttons -->
+            <div class="button-row-second">
+                {% if group.name == 'Employees' %}   
+              
+                <button onclick="window.location.href='{% url 'employee_report' request.user.id %}'" class="button-nokpi">Show IPCR</button>
+                
+                <!-- Conditionally disable buttons if employee is locked -->
+                <button 
+                    onclick="window.location.href='{% url 'activities' request.user.id %}'" 
+                    class="button-nokpi" 
+                    {% if request.user.employee.locked %} disabled {% endif %}>
+                    Add Activities
+                </button>
+                <button 
+                    onclick="window.location.href='{% url 'smart_kpi_not_in_activitiesopcr' %}'" 
+                    class="button-nokpi" 
+                    {% if request.user.employee.locked %} disabled {% endif %}>
+                    No Activity KPI
+                </button>
+            </div>
+            
+            {% endif %}
+            {% endfor %}
+        </div>
+            <div class="button-row-third">
+          
+                <button onclick="window.location.href='{% url 'logout' %}'" class="button-logout">Logout</button>
+            </div>
+        {% else %}
+            <p>Please <a href="{% url 'login' %}">login</a> to access this page.</p>
+        {% endif %}
+  
+</body>
+</html>

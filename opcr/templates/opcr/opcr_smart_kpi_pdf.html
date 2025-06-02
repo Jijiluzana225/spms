@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPCR Smart KPI Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #0056b3;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .no-data {
+            text-align: center;
+            margin: 20px 0;
+            color: #666;
+        }
+
+        @media print {
+            body {
+                font-size: 12px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            table {
+                margin-top: 10px;
+            }
+
+            th, td {
+                font-size: 10px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>OPCR Smart KPI Report</h1>
+
+    {% if opcr_smart_kpis %}
+    <table>
+        <thead>
+            <tr>
+                <th>OPCR</th>
+                <th>Pillar KPI</th>
+                <th>Smart KPI</th>
+                <th>Jan-June Qty</th>
+                <th>Jan-June %</th>
+                <th>Jul-Dec Qty</th>
+                <th>Jul-Dec %</th>
+                <th>Budget</th>
+                <th>Category</th>
+                <th>Assigned to</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in opcr_smart_kpis %}
+            <tr>
+                <td>{{ item.opcr|default:'' }}</td>
+                <td>{{ item.pillar_kpi|default:'' }}</td>              
+                <td>{{ item.name|default:'' }}</td>
+                <td>{{ item.first_half_unit|default:'' }}</td>
+                <td>{{ item.first_half_percent|default:'' }}</td>
+                <td>{{ item.second_half_unit|default:'' }}</td>
+                <td>{{ item.second_half_percent|default:'' }}</td>
+                <td>{{ item.budget|default:'' }}</td>
+                <td>{{ item.category|default:'' }}</td>
+                <td>
+                    {% if item.assignedto.exists %}
+                        {{ item.assignedto.all|join:", " }}
+                    {% else %}
+                        
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="no-data">No OPCR Smart KPIs available for your division.</p>
+    {% endif %}
+</body>
+</html>

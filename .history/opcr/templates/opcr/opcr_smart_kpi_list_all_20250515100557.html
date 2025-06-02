@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPCR Smart KPI List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            font-size: smaller;
+        }
+
+        th {
+            background-color: #0056b3;
+            color: #fff;
+            font-size:large;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            color: #0056b3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #00376b;
+            text-decoration: underline;
+        }
+
+        .add-button, .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: normal;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-button {
+            background-color: #0056b3;
+        }
+
+        .add-button:hover {
+            background-color: #00376b;
+        }
+
+        .btn-back {
+            background-color: #04f72c;
+        }
+
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
+
+        .no-data {
+            text-align: center;
+            margin: 20px 0;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 10px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            .add-button, .btn-back {
+                width: 100%;
+                text-align: center;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>OPCR Smart KPI List</h1>
+
+    {% if opcr_smart_kpis %}
+    <table>
+        <thead>
+            <tr>
+                <th>OPCR</th>
+                <th>Pillar KPI</th>                
+                <th>Smart KPI</th>
+                <th>Jan-June Qty</th>
+                <th>Jan-June %</th>
+                <th>Jul-Dec Qty</th>
+                <th>Jul-Dec %</th>
+                <th>Budget</th>
+                <th>Category</th>
+                <th>Assigned to</th>
+                <th>Actions</th>
+                <th>Accomplishment</th>                
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in opcr_smart_kpis %}
+            <tr>
+                <td>{{ item.opcr|default:'' }}</td>
+                <td>{{ item.pillar_kpi|default:'' }}</td>              
+                <td>{{ item.name|default:'' }}</td>
+                <td>{{ item.first_half_unit|default:'' }}</td>
+                <td>{{ item.first_half_percent|default:'' }}</td>
+                <td>{{ item.second_half_unit|default:'' }}</td>
+                <td>{{ item.second_half_percent|default:'' }}</td>
+                <td>{{ item.budget|default:'' }}</td>
+                <td>{{ item.category|default:'' }}</td>
+                <td>
+                    {% if item.assignedto.exists %}
+                        {{ item.assignedto.all|join:", " }}
+                    {% else %}
+                        
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'update_opcr_smart_kpi' item.pk %}">Edit</a>
+                </td>
+                <td>
+                    <a href="{% url 'rate_opcr_smart_kpi' item.pk %}">Narrative</a>
+                </td>
+                <td>
+                    <a href="{% url 'rate_opcr_smart_kpi_rate' item.pk %}">Rate</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="no-data">No OPCR Smart KPIs available.</p>
+    {% endif %}
+    
+      
+    <a href="{% url 'add_opcr_smart_kpi' %}" class="add-button">Add New OPCR Smart KPI</a>
+    <a href="{% url 'generate_pdf' %}" class="add-button">Print OPCR</a>
+    <div class="text-center">
+        <a href="{% url 'landing_page' %}" class="btn-back">Back to Landing Page</a>
+    </div>
+</body>
+</html>

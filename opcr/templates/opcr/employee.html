@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Employee Activities</title>
+    <script>
+        function updateFormAction() {
+            const employeeSelect = document.getElementById('employee');
+            const selectedId = employeeSelect.value;
+            const form = document.getElementById('employee-form');
+
+            // Update the form action with the selected employee ID
+            {% comment %} form.action = "{% url 'employee_activities' 0 %}".replace('0', selectedId); {% endcomment %}
+        }
+    </script>
+</head>
+<body>
+    <h1>Select Employee to View Activities</h1>
+
+    <form method="GET" action="{% url 'employee_activities' user.id %}" id="employee-form" onsubmit="updateFormAction()">
+        {% csrf_token %}
+        <!-- <label for="employee">Choose an employee:</label>
+        <select name="employee_id" id="employee" required>
+            <option value="">Select an employee</option>
+            {% for employee in employees %}
+                <option value="{{ employee.id }}">{{ employee.name }}</option>
+            {% endfor %}
+        </select>
+        {{employee.id}} = {{user.id}} -->
+        <button type="submit">View Activities</button>
+      
+    </form>
+
+</body>
+</html>
+
+<!-- employee_report.html -->
+ <!-- {% load humanize %}
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Report</title>
+    <link rel="stylesheet" href="{% static 'your_app/styles.css' %}">
+    <style>
+        body {
+            font-family: 'Calibre', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        /* Table and button styles here */
+    </style>
+</head>
+<body>
+    <h1>Employee Report for {{ employee.name }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>KPI Name</th>
+                <th>Smart KPI Name</th>
+                <th>Activity OPCR</th>
+                <th>First Half Percent</th>
+                <th>First Half Unit</th>
+                <th>Second Half Percent</th>
+                <th>Second Half Unit</th>
+                <th>Budget</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for activity in activities %}
+                <tr>
+                    <td>{{ activity.smart_kpi.kpi.name|default_if_none:"" }}</td>
+                    <td>{{ activity.smart_kpi.name|default_if_none:"" }}</td>
+                    <td>{{ activity.activity|default_if_none:"" }}</td>
+                    <td>{{ activity.first_half_percent|floatformat:2|default_if_none:"" }}</td>
+                    <td>{{ activity.first_half_unit|floatformat:2|default_if_none:"" }}</td>
+                    <td>{{ activity.second_half_percent|floatformat:2|default_if_none:"" }}</td>
+                    <td>{{ activity.second_half_unit|floatformat:2|default_if_none:"" }}</td>
+                    <td>
+                        {% if activity.budget %}
+                            ${{ activity.budget|intcomma }}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="{% url 'delete_activity' activity.id %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this activity?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="9">No activities found for this employee.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+ -->

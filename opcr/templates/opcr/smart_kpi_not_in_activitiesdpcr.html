@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart KPIs Not in DPCR Activities</title>
+    <style>
+        /* Reset some default browser styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f7f8fa;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .kpi-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .kpi-list li {
+            background-color: #e3f2fd;
+            color: #0277bd;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .message {
+            color: #888;
+            font-size: 1.1rem;
+            padding: 15px;
+            background-color: #f3f4f6;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .kpi-icon {
+            margin-right: 10px;
+            font-size: 1.5rem;
+            color: #0288d1;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #05ff65;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #01579b;
+        }
+        .submit-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0277bd;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #01579b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Smart KPIs Not in DPCR Activities</h1>
+
+        {% if smart_kpi_not_in_activitiesdpcr %}
+            <ul class="kpi-list">
+                {% for kpi in smart_kpi_not_in_activitiesdpcr %}
+                    <li>
+                        <span class="kpi-icon">📈</span>
+                        {{ kpi.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="message">All Smart KPIs are recorded in your activities.</p>
+            <div>
+                <a href="{% url 'lock_profile' %}" class="submit-button">Submit For Approval</a>
+            </div>
+        {% endif %}
+
+        <!-- Back to Landing Page Button -->
+        <a href="{% url 'landing_page' %}" class="back-button">Back to Landing Page</a>
+    </div>
+</body>
+</html>

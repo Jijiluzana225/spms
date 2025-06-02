@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New IPCR/DPCR</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+        
+        /* Form container */
+        .form-container {
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Error messages styling */
+        .error-messages {
+            color: red;
+            margin-bottom: 15px;
+        }
+
+        .error-messages ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .error-messages li {
+            margin-bottom: 5px;
+        }
+
+        /* Submit button styling */
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+          /* Back button styling */
+          .btn-back {
+            background-color: #04f72c;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Add New IPCR/DPCR</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <!-- Display error messages -->
+            {% if form.errors %}
+                <div class="error-messages">
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            <li><strong>{{ field }}:</strong> {{ errors|join:", " }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <button type="submit">Submit</button>
+        </form>
+    
+
+    
+
+        <div class="text-center">
+            <a href="{% url 'landing_page' %}" class="btn-back">Back to Landing Page</a>
+        </div>
+    </div>
+    
+</body>
+</html>

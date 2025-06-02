@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New User and Employee</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2, h4 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        h4 {
+            color: #0d6efd;
+            margin-top: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-control {
+            width: 100%;
+            max-width: 100%;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .btn-group-responsive {
+            margin-top: 2rem;
+        }
+        .btn-group-responsive .btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+        @media (min-width: 576px) {
+            .btn-group-responsive {
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+            }
+            .btn-group-responsive .btn {
+                width: auto;
+                margin-bottom: 0;
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <div class="form-container">
+            <h2>Create New User and Employee</h2>
+            <form method="post" autocomplete="off">
+                {% csrf_token %}
+
+                <h4>User Info</h4>
+                {% for field in user_form %}
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label form-label">{{ field.label_tag }}</label>
+                        <div class="col-sm-9">
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <h4>Employee Info</h4>
+                {% for field in employee_form %}
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label form-label">{{ field.label_tag }}</label>
+                        <div class="col-sm-9">
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="btn-group-responsive">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <a href="{% url 'landing_page' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

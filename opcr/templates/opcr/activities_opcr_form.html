@@ -1,0 +1,38 @@
+<!-- your_app_name/templates/activities_opcr_form.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Activities</title>
+</head>
+<body>
+    <h1>Employee Activities</h1>
+
+    <form method="POST" action=".">
+        {% csrf_token %}
+        
+        <fieldset>
+            <legend>OPCR Activity Details</legend>
+
+            {% if activities_opcr_form.non_field_errors %}
+                <div class="error">{{ activities_opcr_form.non_field_errors }}</div>
+            {% endif %}
+            
+            {% for field in activities_opcr_form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+
+                    {% if field.errors %}
+                        <div class="error">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </fieldset>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

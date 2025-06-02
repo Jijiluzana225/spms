@@ -1,0 +1,222 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Report</title>
+    <style>
+        @page {
+            size: 8.5in 13in landscape; /* Legal size in landscape */
+            margin:.5in; /* Adjust margins as needed */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        p {
+            text-align: center;
+            font-size: 14px;
+            color: gray;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+            
+            
+
+        }
+        th {
+            background-color: yellow;
+        }
+        /* th, td {
+            padding-top: 10px;
+            padding-left: 0PX;
+            padding-right: 0PX;
+
+            text-align: left;
+        } */
+        th, td {
+            word-wrap: break-word; /* Allows breaking long words */
+            white-space: normal;   /* Prevents text from staying on a single line */
+            text-align: center;      /* Aligns text to the left for better readability */
+            padding-top: 10px;
+            padding-left: 0PX;
+            padding-right: 0PX;   /* Optional: Ensures proper spacing */
+            font-size: small;
+            }
+        td {
+            vertical-align: top;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <img src="{% static 'iit.png' %}" alt="KPI Image" style="width: 100px; height: auto;">
+    <h1>OFFICE PERFORMANCE COMMITMENT AND REVIEW (OPCR) <br> 
+    January 2025 to December 2025 (Period Covered)</h1> <!-- Display the division and title -->
+    <!-- <p>Generated on: {{ date }}</p> -->
+    <h2>Responsibility Center/Office: {{division}} </h2>
+    <table>
+        <thead>
+            <tr>
+                
+                <th rowspan="4" style="width: 10%;">Org Outcome</th> <!-- Spans 2 columns -->
+                <th rowspan="4" style="width: 5%;">Pilar</th> <!-- Spans 2 columns -->
+                <th rowspan="4" style="width: 10%;" >Pilar KPI</th> <!-- Spans 2 columns -->
+               
+                <th colspan="6" style="width: 20%;">PART I. PERFORMANCE COMMITMENT (SUCESS INDICATORS)</th> <!-- Spans 2 columns -->
+                <th rowspan="4" style="width: 5%;">Budget Allocated</th>
+                <th rowspan="4" style="width: 10%;">Office/Department/Person</th>
+                <th rowspan="1" style="width: 20%;">PART II. PERFORMANCE EVALUATION <br> (ACTUAL ACCOMPLISHMENTS)</th> 
+                    
+               
+                
+                
+            
+            </tr>
+           
+
+             
+            <tr>
+                <th rowspan="3" style="width: 30%;">Smart KPI</th> <!-- Spans 2 columns --> 
+                <th colspan="5" style="width: 10%;">Targets/Commitment Output</th>
+               
+            </tr>
+           
+            
+            <tr>
+                                               
+                <th colspan="2" style="width: 3%;">Q1 Jan - June</th>
+                <th colspan="2" style="width: 3%;">Q2 Jul - Dec</th>
+                <th rowspan="2" style="width: 5%;">Total</th>            
+                <th rowspan="1" style="width: 5%;">Acutal</th>            
+
+            </tr>
+            
+            <tr>
+                                               
+                <th>Qty</th>
+                <th>%</th>
+                <th>Qty</th>
+                <th>%</th>
+                
+
+            </tr>
+         
+              
+        </thead>
+        <tbody>
+            {% for obj in objects %}           
+            <tr>
+            
+
+                <td>{{ obj.pillar_kpi.pillars.Organization_Outcome|default:" " }}</td>
+                <td>{{ obj.pillar_kpi.pillars.name|default:" " }}</td>
+                <td>{{ obj.pillar_kpi.name|default:"N/A" }}</td>
+                <td>{{ obj.name|default:"N/A" }}</td> <!-- Set to N/A if empty -->
+                <td>{{ obj.first_half_unit|default:'' }}</td> <!-- Set to N/A if empty -->
+                
+                <td>{{ obj.first_half_percent|default:'' }}</td>
+                <td>{{ obj.second_half_unit|default:'' }}</td>
+                <td>{{ obj.second_half__percent|default:'' }}</td>
+                <td>{{ obj.first_half_unit|default:""|add:obj.second_half_unit|default:""|floatformat:2 }}</td>
+                <td>{{ obj.budget|default:'' }}</td>
+                
+                <td>
+                    {% if obj.assignedto.exists %}
+                        {{ obj.assignedto.all|join:", " }}
+                    {% else %}
+                        
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+   
+    <table style="width: 100%; background-color: white;border: 1px solid black;">
+        <tr>
+            <td colspan="2" style=" border: 1px solid black;width: 33.33%; text-align: left; padding: 8px;">Submitted by:</td>
+            <td colspan="2" style=" border: 1px solid black;width: 33.33%; text-align: left;  padding: 8px;">Reviewed by:</td>
+            <td colspan="2" style=" border: 1px solid black;width: 33.33%; text-align: left;  padding: 8px;">Validated by:</td>
+          </tr>
+        <tr>
+          <th colspan="2" style="  border: 1px solid black;background-color: white;width: 33.33%; text-align: center; padding: 8px;"><br><br><br>
+            Responsibility Center Head (Dean/Director/Equivalent/Designated Head)<br>
+            Signature<br>
+           </th>
+          <th colspan="2" style=" border: 1px solid black; background-color: white;width: 33.33%; text-align: center;  padding: 8px;"><br><br><br>
+            Vice-Chancellor for Strategic Initiatives<br>
+            Signature<br>
+            </th>
+          <th colspan="2" style="  border: 1px solid black;background-color: white;width: 33.33%; text-align: center;  padding: 8px;"><br><br>MOH'D ASRIN A. TABAO<br>
+            Director, OIPDS-OVCSI<br>
+            Signature<br>
+            </th>
+        </tr>
+        <tr>
+            <td style=" border: 1px solid black;width: 33.33%; text-align: left;  padding: 8px;"> Date Submitted:</td>
+            <td style=" border: 1px solid black;width: 33.33%; text-align: left;  padding: 8px;"></td>
+            <td style=" border: 1px solid black;width: 33.33%; text-align: left;  padding: 8px;">Date Reviewed:</td>
+            <td style=" border: 1px solid black;width: 33.33%; text-align: left; padding: 8px;"></td>
+            <td style=" border: 1px solid black;width: 33.33%; text-align: left; padding: 8px;">Date Validated:</td>
+            <td style=" border: 1px solid black;width: 33.33%; text-align: left; padding: 8px;"></td>
+            
+        </tr>
+       
+        <tr style="padding-top: 20px;">
+            <td colspan="2" style=" border: 1px solid black;width: 33.33%; text-align: left;  padding: 8px;">Recommend by:</td>
+            <td colspan="2" style=" border: 1px solid black;width: 33.33%; text-align: left;  padding: 8px;">Approved by:</td>
+            <td colspan="2" style=" border: 1px solid black;width: 33.33%; text-align: left; ; padding: 8px;">Filed and Received by:</td>
+          </tr>
+        <tr>
+          <th colspan="2" style="  border: 1px solid black;background-color: white;width: 33.33%; text-align: center;  padding: 8px;"><br><br>Prof. Mark Anthony J. Torres, Phd<br>
+            PMT Chairman (Vice-Chancellor for Stategic Initiatives (OVCSI))	<br>
+            Signature<br>
+            </th>
+          <th colspan="2" style="  border: 1px solid black;background-color: white;width: 33.33%; text-align: center; padding: 8px;"><br><br>ALIZEDNEY M. DITUCALAN, JD, LLB<br>
+            Chancellor / PMT Chairman (For Offices under OC)							<br>
+            Signature<br>
+           </th>
+          <th colspan="2" style="  border: 1px solid black;background-color: white;width: 33.33%; text-align: center;  padding: 8px;"><br><br>MELGIE A. ALAS, MMBM, PGDSDS<br>
+            Director, OME-OVCSI						<br>
+            Signature<br>
+           </th>
+        </tr>
+        <tr>
+            <td style="width: 33.33%; text-align: left;  padding: 8px;border: 1px solid black;"> Date Submitted:</td>
+            <td style="width: 33.33%; text-align: left;  padding: 8px;border: 1px solid black;"></td>
+            <td style="width: 33.33%; text-align: left;  padding: 8px;border: 1px solid black;">Date Reviewed:</td>
+            <td style="width: 33.33%; text-align: left;  padding: 8px;border: 1px solid black;"></td>
+            <td style="width: 33.33%; text-align: left;  padding: 8px;border: 1px solid black;">Date Validated:</td>
+            <td style="width: 33.33%; text-align: left;  padding: 8px;border: 1px solid black;"></td>
+            
+        </tr>
+      </table>
+   
+      
+      <div class="footer">
+        <!-- Page <span class="page-number">{PAGENUM}</span> of <span class="page-number">{PAGECOUNT}</span> -->
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+

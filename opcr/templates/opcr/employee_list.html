@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            padding: 20px;
+            background-color: #2d3b42;
+            color: white;
+            margin: 0;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #2d3b42;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+        }
+
+        .delete-button:hover {
+            background-color: #e53935;
+        }
+
+        .status-form button {
+            background-color: #008CBA;
+        }
+
+        .status-form button:hover {
+            background-color: #007bb5;
+        }
+
+        .confirmation {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #777;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .btn-back {
+            background-color: #007bff; /* Blue color */
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-back:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<h2>Employee List</h2>
+
+<!-- Table of employees -->
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Designation</th>
+            <th>Division</th>
+            <th>Performance Category</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.designation }}</td>
+            <td>{{ employee.division.name }}</td>
+            <td>{{ employee.get_opcr_dpcr_display }}</td>
+            <td>
+                {% if employee.locked %}
+                Locked
+            {% else %}
+                Unlocked
+            {% endif %}
+                
+            </td>
+            <td class="action-buttons">
+                <!-- Link to update employee -->
+                <a href="{% url 'update_employee' employee.id %}">
+                    <button type="button">Update</button>
+                </a>
+                
+               
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+ <div style="text-align: center; margin-top: 20px; padding: 20px 0;">
+        <a href="{% url 'landing_page' %}" class="btn-back">Back to Landing Page</a>
+    </div>
+
+</body>
+</html>

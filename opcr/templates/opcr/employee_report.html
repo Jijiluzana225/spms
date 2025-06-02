@@ -1,0 +1,196 @@
+<!-- your_app/templates/employee_report.html -->
+{% load static %}
+{% load humanize %}
+
+<!-- employee_report.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Report</title>
+    <link rel="stylesheet" href="{% static 'your_app/styles.css' %}"> <!-- Link your custom CSS file -->
+    
+</head>
+<body><style>
+        body {
+            font-family: 'Calibre', sans-serif; /* Adjust if using a different font */
+            background-color: #f0f0f0; /* Optional background color */
+            margin: 0;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1; /* Highlight on hover */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+        .btn-back {
+            background-color: #007bff; /* Blue color */
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-back:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        /* Style for the Delete button when it's disabled */
+        .btn-delete:disabled {
+            background-color: #f8d7da; /* Light red background */
+            color: #e2a1a5; /* Light red text */
+            border: 1px solid #f5c6cb; /* Light border */
+            cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+            opacity: 0.7; /* Reduce opacity to indicate it's disabled */
+        }
+
+        .btn-delete:disabled:hover {
+            background-color: #f8d7da; /* No hover effect for disabled state */
+        }
+    </style>
+    <h1>IPCR of {{ user.employee.name }}</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">KPI Name</th>
+                <th scope="col">Smart KPI Name</th>
+                <th scope="col">Activity OPCR</th>
+                <th scope="col">First Half Percent</th>
+                <th scope="col">First Half Unit</th>
+                <th scope="col">Second Half Percent</th>
+                <th scope="col">Second Half Unit</th>
+                <th scope="col">Budget</th>               
+                <th scope="col">Status</th>
+                <th scope="col">Head Remarks</th>
+                <th scope="col">Actions</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+    {% with last_kpi_name="" %}
+        {% for activity in activities %}
+            <tr>
+                <td>
+                    {% if activity.smart_kpi.pillar_kpi.name != last_kpi_name %}
+                        {{ activity.smart_kpi.pillar_kpi.name }}
+                        {% with activity.smart_kpi.pillar_kpi.name as last_kpi_name %}{% endwith %}
+                    {% else %}
+                        &nbsp;  <!-- If the KPI name is the same as the last, render an empty cell -->
+                    {% endif %}
+                    
+                </td>
+                
+                <td>{% if activity.smart_kpi.name %}{{ activity.smart_kpi.name }}{% else %} {% endif %}</td>
+                <td>{% if activity.activity %}{{ activity.activity }}{% else %} {% endif %}</td>
+                <td>{% if activity.first_half_percent %}{{ activity.first_half_percent }}{% else %} {% endif %}</td>
+                <td>{% if activity.first_half_unit %}{{ activity.first_half_unit }}{% else %} {% endif %}</td>
+                <td>{% if activity.second_half_percent %}{{ activity.second_half_percent }}{% else %} {% endif %}</td>
+                <td>{% if activity.second_half_unit %}{{ activity.second_half_unit|floatformat:2 }}{% else %} {% endif %}</td>
+                
+                <td>
+                    {% if activity.budget %}
+                        {{ activity.budget|intcomma }}                   
+                    {% endif %}
+                </td>
+                <td>{% if activity.opcr_status %}{{ activity.opcr_status }}{% else %} {% endif %}</td>
+                <td>{% if activity.head_remarks %}{{ activity.head_remarks }}{% else %} {% endif %}</td>
+                
+                <td>
+                    <form action="{% url 'confirm_delete_activity' activity.id %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-delete" 
+                                aria-label="Delete Activity" 
+                                {% if request.user.employee.locked %}disabled{% endif %}>
+                            Delete
+                        </button>
+                    </form>
+                </td>
+             
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="9">No activities found for this employee.</td>
+            </tr>
+        {% endfor %}
+    {% endwith %}
+</tbody>
+
+    </table>
+    
+    <!-- Back to Landing Page Button -->
+    <div style="text-align: center; margin-top: 20px; padding: 20px 0;">
+        <a href="{% url 'landing_page' %}" class="btn-back">Back to Landing Page</a>
+    </div>
+
+    <style>
+        .btn-back {
+            background-color: #007bff; /* Blue color */
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-back:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        
+    </style>
+</body>
+</html>

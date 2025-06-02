@@ -1,0 +1,90 @@
+<!-- your_app/templates/confirm_delete.html -->
+ {% load static %}<!-- your_app/templates/confirm_delete.html -->
+ <!-- confirm_delete.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Delete Activity</title>
+    <link rel="stylesheet" href="{% static 'your_app/styles.css' %}"> <!-- Link your custom CSS file -->
+    <style>
+        /* Inline CSS for quick setup; you can move this to a separate stylesheet if preferred */
+
+        /* Container styling */
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 10%;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #dc3545;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Button styling */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+
+        .btn-cancel {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .btn-cancel:hover {
+            background-color: #5a6268;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Confirm Delete Activity</h2>
+        <p>Are you sure you want to delete the activity <strong>"{{ activity.activity }}"</strong>?</p>
+        
+        <div class="button-group">
+            <form action="{% url 'delete_activity' activity.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-delete">Yes, delete it!</button>
+            </form>
+            <a href="{% url 'employee_report' user.id %}" class="btn btn-cancel">Cancel</a>
+        </div>
+    </div>
+</body>
+</html>

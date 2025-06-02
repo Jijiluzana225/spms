@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update OPCR Smart KPI</title>
+    <style>
+        /* Reset some default styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Basic styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f5f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0056b3;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Form container styling */
+        form {
+            width: 100%;
+            max-width: 480px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Label styling */
+        label {
+            display: block;
+            font-weight: 600;
+            margin-top: 15px;
+            color: #0056b3;
+            font-size: 14px;
+        }
+
+        /* Input, select, and textarea styling */
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccd1d9;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #0056b3;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+        }
+
+        /* Submit button styling */
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0056b3;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #00376b;
+            transform: translateY(-2px);
+        }
+
+        /* Error styling */
+        .error-list {
+            color: #b30000;
+            background-color: #ffe6e6;
+            border: 1px solid #ffcccc;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            list-style-type: none;
+        }
+
+        .error-list li {
+            margin-bottom: 5px;
+        }
+
+        /* Smooth transition for error messages */
+        .error-list li {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+   
+
+    <form method="post">
+    <h1>Update OPCR Smart KPI</h1>
+        {% csrf_token %}
+        {{ form.as_p }} <!-- Render the form fields -->
+
+        <button type="submit">Update</button>
+    </form>
+
+    <!-- Display any form errors -->
+    {% if form.errors %}
+        <ul class="error-list">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

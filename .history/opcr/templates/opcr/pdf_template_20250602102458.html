@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Performance Evaluation Report</title>
+    <style>
+        @page {
+            size: 13in 8.5in;
+            margin: 5mm;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .report-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto;
+            word-break: break-word;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 4px;
+            text-align: center;
+            font-size: 9px;
+            vertical-align: middle;
+            white-space: normal;
+        }
+
+        th {
+            background-color: #FFD700;
+        }
+
+        .sub-header {
+            background-color: #FFED8B;
+        }
+
+        .highlight-yellow {
+            background-color: #FFCC00;
+        }
+
+        .highlight-light {
+            background-color: #FFEAD0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-title">Performance Evaluation Report</div>
+
+<table>
+    <thead>
+        <tr>
+            <th rowspan="3">ORGANIZATIONAL OUTCOME (OO)</th>
+            <th rowspan="3">KEY RESULT AREAS (KRAs)<br>(6 Pillars)</th>
+            <th rowspan="3">INSTITUTIONAL LEVEL<br>KEY PERFORMANCE INDICATORS (KPIs)</th>
+            <th colspan="4">PART I. PERFORMANCE COMMITMENT<br>(SUCCESS INDICATORS)</th>
+            <th rowspan="3">ALLOTTED BUDGET</th>
+            <th rowspan="3">DEPARTMENT /<br>OFFICE / PERSON</th>
+            <th colspan="6">PART II. PERFORMANCE EVALUATION<br>(ACTUAL ACCOMPLISHMENTS)</th>
+            <th rowspan="3">SCORE</th>
+            <th rowspan="3">REMARKS<br>Supervisor/<br>Vice Chancellor</th>
+            <th rowspan="3" class="highlight-yellow">
+                For January to June 2024<br>
+                <span style="font-weight: normal;">Attach Viewable Link of Detailed Documentations</span>
+            </th>
+            <th rowspan="3" class="highlight-light">COMMENTS/REMARKS<br>OIPD/SOME</th>
+        </tr>
+        <tr>
+            <th rowspan="2">KEY PERFORMANCE INDICATORS (KPI)</th>
+            <th colspan="2">Targets/Commitment Output</th>
+            <th rowspan="2">TOTAL</th>
+            <th rowspan="2">STATUS OF ACCOMPLISHMENTS<br>(Narrative)</th>
+            <th rowspan="2">Quantity<br>(if applicable)</th>
+            <th rowspan="2">QUALITY</th>
+            <th rowspan="2">EFFICIENCY</th>
+            <th rowspan="2">TIMELINESS</th>
+            <th rowspan="2">AVERAGE SCORE</th>
+        </tr>
+        <tr>
+            <th>Jan-Jun</th>
+            <th>Jul-Dec</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for obj in objects %}   
+        <tr>
+           <td>{{ obj.pillar_kpi.pillars.Organization_Outcome|default:" " }}</td>
+            <td>{{ obj.pillar_kpi.pillars.name|default:" " }}</td>
+                <td>{{ obj.pillar_kpi.name|default:"N/A" }}</td>
+                <td>{{ obj.name|default:"N/A" }}</td> <!-- Set to N/A if empty -->
+                <td>{{ obj.first_half_unit|default:'' }}</td> <!-- Set to N/A if empty -->
+                
+                <td>{{ obj.first_half_percent|default:'' }}</td>
+                <td>{{ obj.second_half_unit|default:'' }}</td>
+                <td>{{ obj.second_half__percent|default:'' }}</td>
+                <td>{{ obj.first_half_unit|default:""|add:obj.second_half_unit|default:""|floatformat:2 }}</td>
+                <td>{{ obj.budget|default:'' }}</td>
+                
+                <td>
+                    {% if obj.assignedto.exists %}
+                        {{ obj.assignedto.all|join:", " }}
+                    {% else %}
+                        
+                    {% endif %}
+                </td>
+            <td>High</td>
+            <td>On Time</td>
+            <td>97%</td> <!-- AVERAGE SCORE -->
+            <td>95%</td> <!-- SCORE -->
+            <td>Reviewed and approved.</td>
+            <td><a href="#">Drive Link</a></td>
+            <td>Met with OIPD for review. All criteria met.</td>
+        </tr>
+         {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

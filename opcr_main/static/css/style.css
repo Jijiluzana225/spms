@@ -1,0 +1,65 @@
+/* static/css/style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    color: #fff;
+    text-decoration: none;
+}
+
+.navbar-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 1rem;
+}
+
+.dashboard-container {
+    padding: 2rem;
+}
+
+.dashboard-section {
+    margin-bottom: 2rem;
+}
+
+.kpi-container {
+    display: flex;
+    gap: 1rem;
+}
+
+.kpi-card {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1;
+}
+
+.messages {
+    list-style: none;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.messages li {
+    margin-bottom: 10px;
+    color: #333;
+}

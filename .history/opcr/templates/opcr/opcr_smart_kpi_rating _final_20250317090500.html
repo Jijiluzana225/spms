@@ -1,0 +1,447 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update OPCR Smart KPI</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fb;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0056b3;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styling */
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #0056b3;
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.2);
+        }
+
+        /* Button Styling */
+        button, .add-button, .btn-back {
+            padding: 12px 20px;
+            font-size: 16px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+
+        button {
+            background-color: #0056b3;
+        }
+
+        button:hover {
+            background-color: #00408f;
+        }
+
+        .add-button {
+            background-color: #007bff;
+            margin-top: 20px;
+        }
+
+        .add-button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-back {
+            background-color: #28a745;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+
+        .btn-back:hover {
+            background-color: #218838;
+        }
+
+        /* Error List Styling */
+        .error-list {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            list-style-type: none;
+        }
+
+        .error-list li {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .error-list li::before {
+            content: "⚠️ ";
+            font-size: 18px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+        form {
+                padding: 20px;
+            }
+
+        input, select, textarea {
+                font-size: 14px;
+            }
+
+        button, .add-button, .btn-back {
+                width: 100%;
+            }
+        }
+        .container {
+            display: flex;
+            padding-top: 20px;
+            gap: 20px; /* Space between columns */
+            flex-wrap: wrap; /* Ensure responsiveness */
+        }
+        .column {
+            flex: 1; /* Equal column width */
+            min-width: 200px; /* Ensure a minimum size */
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column; /* Stack columns on small screens */
+            }
+        }
+        
+        .attachment-form {
+        margin-top: 20px;
+    }
+
+    .form-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .attachment-list {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .attachment-info a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .attachment-info a:hover {
+        text-decoration: underline;
+    }
+
+    .attachment-actions .custom-checkbox {
+        position: relative;
+        display: inline-block;
+        padding-left: 30px;
+    }
+
+    .attachment-actions .custom-checkbox input {
+        position: absolute;
+        opacity: 0;
+        left: 0;
+        top: 0;
+    }
+
+    .attachment-actions .checkmark {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 18px;
+        height: 18px;
+        border: 2px solid #007bff;
+        background-color: #fff;
+        border-radius: 50%;
+        transition: background-color 0.3s, border 0.3s;
+    }
+
+    .attachment-actions .custom-checkbox input:checked + .checkmark {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .attachment-actions .custom-checkbox input:checked + .checkmark:after {
+        content: '';
+        position: absolute;
+        left: 6px;
+        top: 6px;
+        width: 6px;
+        height: 6px;
+        background-color: #fff;
+        border-radius: 50%;
+    }
+
+    .btn-danger {
+        padding: 8px 20px;
+        font-size: 1rem;
+        border-radius: 4px;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+
+    </style>
+</head>
+<body>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1>Update OPCR Smart KPI</h1>
+
+        <div class="form-group">
+            <label for = "opcr">OPCR</label>
+            {{form.opcr}}
+            <!-- {{opcr_smart_kpi.opcr}} -->
+            <p style="font-family:Arial, Helvetica, sans-serif; font-size: small; color: rgb(70, 6, 248);">{{opcr_smart_kpi.opcr}}</p>
+            <label for = "pillar_kpi" style="padding-top: 10px;">Pillar KPI</label>
+            {{form.pillar_kpi}}
+            <!-- {{opcr_smart_kpi.pillar_kpi}} -->
+            <p style="font-family:Arial, Helvetica, sans-serif; font-size: small; color: rgb(70, 6, 248);">{{opcr_smart_kpi.pillar_kpi}}</p>
+            <!-- {{ form.as_p }} Render the form fields -->
+            <label for = "name" style="padding-top: 10px;" >SMART KPI</label>
+            {{form.name}}          
+            <p style="font-family:Arial, Helvetica, sans-serif; font-size: larger; color: rgb(70, 6, 248);">{{opcr_smart_kpi.name}}</p>
+            <label for = "category" style="padding-top: 10px;" >Category</label>
+            {{form.category}}
+            <!-- {{opcr_smart_kpi.category}} -->
+            <p style="font-family:Arial, Helvetica, sans-serif; font-size: small; color: rgb(70, 6, 248);">{{opcr_smart_kpi.category}}</p>
+
+            <!-- {{ form.as_p }} Render the form fields -->
+            
+            <label for = "assignedto" style="padding-top: 10px;" >People/Department</label>
+            <div>
+                <!-- {{form.assignedto}} -->
+                <!-- {{ opcr_smart_kpi.assignedto.all|join:", " }} -->
+                <p style="font-family:Arial, Helvetica, sans-serif; font-size: small; color: rgb(70, 6, 248);">{{opcr_smart_kpi.assignedto.all|join:", "}}</p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="column">
+                
+                <h2 style="text-align: center; color: #007bff;">TARGET</h3>
+                <h4 style="text-align: center;">January to June <br> (1st Half)</h3>
+                <div style="padding-top: 25px;" >
+                    <label for = "first_half_unit" style="padding-top: 10px;">Qty: <label style="color: blue;">{{opcr_smart_kpi.first_half_unit|default:'' }}</label></label>
+                    
+                    <label for = "first_half_percent" style="padding-top: 10px;">%: {{opcr_smart_kpi.first_half_percent|default:'' }}</label>
+                    <!-- {{form.first_half_percent}} -->
+                </div>
+            </div>
+            <div class="column">
+                
+                <h2 style="text-align: center; color: #007bff;">TARGET</h3>
+                <h4 style="text-align: center;">July to December <br> (2nd Half)</h3>
+                    <div style="padding-top: 25px;" >
+                        <label for = "first_half_unit" style="padding-top: 10px;">Qty: {{opcr_smart_kpi.second_half_unit|default:'' }}</label>
+                        
+                        <label for = "first_half_percent" style="padding-top: 10px;">%: {{opcr_smart_kpi.second_half_percent|default:'' }}</label>
+                        <!-- {{form.first_half_percent}} -->
+                    </div>
+            </div>
+            <div class="column">
+                <h2 style="text-align: center;color:lightgreen">Accomplishment</h3>                    
+                    <label for = "accomplishment_qty" style="padding-top: 10px;">Qty</label>
+                    {{form.accomplishment_qty}}
+                    <label for = "accomplishment_percent" style="padding-top: 10px;">%</label>
+                    {{form.accomplishment_percent}}
+            </div>
+        
+        
+        </div>
+        <div class="container">
+            <div class="column">
+                
+                <h2 style="text-align: center; color: #007bff;padding-bottom: 5px;">TARGET</h3>
+                <h4 style="text-align: center;padding-bottom: 10px;">Budget Amount</h3>
+                <div >
+                    <h2 style="text-align: center;padding-bottom: 10px; ">   {{ opcr_smart_kpi.budget|default:'0'|floatformat:2|intcomma }} </h2>
+                    <!-- <input type="text" id="budget" name="budget" placeholder="Enter budget..." -->
+                </div>
+            </div>
+            
+            <div class="column">
+                <h2 style="text-align: center;color:lightgreen;padding-bottom: 5px;">Accomplishment</h3>
+                    <h4 style="text-align: center; padding-bottom: 10px;">Budget Used</h3>
+                       
+                           
+                            <input 
+                            type="text" 
+                            name="budget_used" 
+                            id="budget_used" 
+                            value="{{ opcr_smart_kpi.budget_used|default:'0'|floatformat:2|intcomma }}" 
+                            oninput="formatCurrency(this)"
+                            style="text-align: center; font-size: 30px; font-weight: bold;" />
+                                        
+                           
+                       
+            </div>
+        </div>  
+        
+        <div class="container">
+            <div class="column">
+                <h2 style="text-align: center;color:lightgreen;padding-bottom: 5px;">Smart KPI</h3>
+                    <p style="font-family:Arial, Helvetica, sans-serif; font-size: larger; color: rgb(70, 6, 248);">{{opcr_smart_kpi.name}}</p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="column">
+                <h2 style="text-align: center;color:rgb(248, 5, 127);padding-bottom: 10px;">Narrative</h3>
+                  
+                        <div >
+                            {{form.narrative}}                    
+                            
+                        </div>
+                        
+                       
+            </div>
+           
+        </div>
+        
+  
+
+                  
+        <div class="form-group" style="padding-top: 20px;">
+            <h2 style="padding-bottom: 10px;">Evidence Files</h2>
+            <!-- <p>To know how to convert picture (.jpg) to PDF,</p> 
+            <a href="https://youtu.be/DYPmHz3qA7c?si=jwjWShJNn35S_Rh1" target="_blank">Watch on YouTube</a>
+         -->
+            <label for="attachments">Upload Files:</label>
+            <input type="file" name="attachments" id="attachments" accept=".pdf, .docx, .xlsx, .jpg, .png" multiple style="margin-bottom: 5px;">
+            <small style="color: gray;">Only .jpg, .png, .pdf, .docx, and .xlsx files are allowed.</small>
+        
+            
+            <h4 class="form-title" style="padding-top: 20px;">Existing Attachments:</h4>
+            <ul class="list-group attachment-list">
+                {% for attachment in opcr_smart_kpi.attachments.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div class="attachment-info">
+                            <a href="{{ attachment.file.url }}" target="_blank" class="attachment-link">{{ attachment.file.name }}</a>
+                        </div>
+                        <div class="attachment-actions">
+                            <label class="custom-checkbox">
+                                <input type="checkbox" name="delete_attachments" value="{{ attachment.id }}">
+                                <span class="checkmark"></span> Delete
+                            </label>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No attachments available.</li>
+                {% endfor %}
+            </ul>
+            </div>
+
+        
+            
+            <div class="container">
+                
+                
+            <div class="column">
+                           
+                               
+                        <div class="column">
+                            <h2 style="text-align: center;color:lightgreen">Rating</h3>                    
+                                <label for = "Quality" style="padding-top: 10px;">Quality</label>
+                                {{form.quality}}
+                                <label for = "efficiency" style="padding-top: 10px;">Efficiency</label>
+                                {{form.efficiency}}
+                                {% comment %} <label for = "timeliness" style="padding-top: 10px;">Timeliness</label>
+                                {{form.timeliness}}
+                                <label for = "averagescore" style="padding-top: 10px;">Average Score</label>
+                                {{form.averagescore}}
+                                <label for = "weightallocation" style="padding-top: 10px;">Weight Allocation</label>
+                                {{form.weightallocation}}
+                                <label for = "score" style="padding-top: 10px;">score</label>
+                                {{form.score}}
+                                <label for = "remarks" style="padding-top: 10px;">Remarks</label>
+                                {{form.remarks}} {% endcomment %}
+
+                        </div>     
+                               
+
+                </div>
+            </div>  
+
+
+
+        </div>
+        
+
+        <button type="submit">Update</button>
+        <a href="{% url 'opcr_smart_kpi_list' %}" class="btn-back">Back to List</a>
+
+        
+        
+
+    </form>
+
+    <!-- Display form errors -->
+    {% if form.errors %}
+        <ul class="error-list">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
